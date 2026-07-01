@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Bite | LactoScan</title>
+    <!-- Importar fuente premium: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           DISEÑO PREMIUM MEDTECH - ESTILO APPLE
+           ========================================= */
+        :root {
+            --azul-clinico: #0A58CA;
+            --azul-oscuro: #042B66;
+            --verde-seguridad: #198754;
+            --alerta-rojo: #DC3545;
+            --fondo-app: #F5F5F7;
+            --blanco-puro: #FFFFFF;
+            --texto-principal: #1D1D1F;
+            --texto-secundario: #86868B;
+            --gris-logo: #111111;
+            --sombra-suave: 0 10px 30px rgba(0,0,0,0.08);
+            --sombra-fuerte: 0 20px 40px rgba(0,10,40,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--fondo-app);
+            color: var(--texto-principal);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Barra Superior (Logos Institucionales a color) */
+        .top-bar {
+            background-color: var(--blanco-puro);
+            padding: 10px 50px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            font-weight: 600;
+        }
+
+        .top-bar img {
+            height: 35px;
+            object-fit: contain;
+            /* Eliminamos el filtro para que los logos conserven sus colores originales */
+        }
+
+        /* Nav (Sticky Glassmorphism) */
+        nav {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gris-logo);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Matraz Redondo con líquido SVG */
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--azul-clinico);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--texto-principal);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--azul-clinico);
+        }
+
+        /* CORRECCIÓN: Botones de Acción (CTA) para que siempre sean blancos */
+        .cta-btn, .nav-links a.cta-btn {
+            background: linear-gradient(135deg, var(--azul-clinico), var(--azul-oscuro));
+            color: var(--blanco-puro) !important; /* Forzamos el color blanco */
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(10, 88, 202, 0.3);
+        }
+
+        .cta-btn:hover, .nav-links a.cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(10, 88, 202, 0.4);
+            color: var(--blanco-puro) !important;
+        }
+
+        /* Animaciones Globales */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 1s ease forwards;
+        }
+
+        /* Secciones Comunes */
+        section {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: radial-gradient(circle at top, #ffffff 0%, var(--fondo-app) 100%);
+            padding-bottom: 50px;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            max-width: 900px;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p.subtitle {
+            font-size: 1.5rem;
+            color: var(--texto-secundario);
+            font-weight: 300;
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+
+        .alert-badge {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--alerta-rojo);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        /* Sección Didáctica: Cómo Funciona */
+        .how-it-works {
+            padding-top: 50px;
+        }
+
+        .how-it-works h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-card {
+            background: var(--blanco-puro);
+            padding: 40px 30px;
+            border-radius: 24px;
+            width: 320px;
+            text-align: left;
+            box-shadow: var(--sombra-suave);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--sombra-fuerte);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: var(--fondo-app);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .step-card p {
+            color: var(--texto-secundario);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Sección de Negocio (Modelo) */
+        .business-section {
+            background: linear-gradient(135deg, var(--texto-principal), #000000);
+            color: var(--blanco-puro);
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .price-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 24px;
+            width: 320px;
+            backdrop-filter: blur(10px);
+        }
+
+        .price-box h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .price-box span {
+            color: #A1A1A6;
+            font-size: 1rem;
+        }
+
+        /* Sección de Equipo */
+        .equipo-section {
+            background-color: var(--fondo-app);
+            padding: 100px 20px;
+        }
+        
+        .equipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 60px auto 0;
+            justify-items: center;
+        }
+        
+        .team-card {
+            background: var(--blanco-puro);
+            padding: 40px 30px;
+            border-radius: 24px;
+            width: 100%;
+            box-shadow: var(--sombra-suave);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid var(--blanco-puro);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            /* AQUÍ ESTÁ EL EFECTO BLANCO Y NEGRO SÓLO PARA LOS FUNDADORES */
+            filter: grayscale(100%);
+        }
+        
+        .team-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--texto-principal);
+            text-align: center;
+        }
+        
+        .team-card p.role {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--azul-clinico);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .team-card ul.funciones {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            width: 100%;
+            color: var(--texto-secundario);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .team-card ul.funciones li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .team-card ul.funciones li::before {
+            content: "→";
+            color: var(--azul-clinico);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Formulario Piloto (Clean UI) */
+        .pilot-section {
+            padding: 100px 20px;
+            text-align: center;
+            background-color: var(--blanco-puro);
+        }
+
+        .pilot-form {
+            background: var(--fondo-app);
+            padding: 50px;
+            border-radius: 24px;
+            max-width: 500px;
+            margin: 40px auto 0;
+            box-shadow: var(--sombra-fuerte);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--texto-principal);
+            font-size: 0.9rem;
+        }
+
+        .pilot-form input, .pilot-form select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #E5E5EA;
+            border-radius: 12px;
+            font-size: 1rem;
+            background-color: var(--blanco-puro);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .pilot-form input:focus, .pilot-form select:focus {
+            border-color: var(--azul-clinico);
+            box-shadow: 0 0 0 3px rgba(10, 88, 202, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--texto-principal);
+            color: var(--blanco-puro);
+            text-align: center;
+            padding: 50px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior de Logos Institucionales -->
+    <div class="top-bar">
+        <span>Con el respaldo de:</span>
+        <img src="UDD.png" alt="Universidad del Desarrollo">
+        <img src="UDDMED.jpg" alt="Facultad de Medicina Clínica Alemana">
+    </div>
+
+    <!-- Navegación Sticky -->
+    <nav>
+        <div class="logo">
+            <!-- Icono SVG: Matraz Redondo (Florence Flask) con líquido -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <!-- Contorno del matraz -->
+                <path d="M15 8.5V4h1V2H8v2h1v4.5C6.6 10.1 5 12.8 5 16c0 3.9 3.1 7 7 7s7-3.1 7-7c0-3.2-1.6-5.9-4-7.5zM12 21c-2.8 0-5-2.2-5-5 0-1.6.8-3.1 2-4h6c1.2.9 2 2.4 2 4 0 2.8-2.2 5-5 5z"/>
+                <!-- Líquido interior -->
+                <path d="M7.2 15c.3 2.3 2.3 4 4.8 4s4.5-1.7 4.8-4H7.2z"/>
+            </svg>
+            Safe Bite
+        </div>
+        <div class="nav-links">
+            <a href="#how-it-works">Tecnología</a>
+            <a href="#equipo">Equipo</a>
+            <a href="#piloto" class="cta-btn">Únete al piloto</a>
+        </div>
+    </nav>
+
+    <!-- Hero Impactante -->
+    <section class="hero-section animate-fade-up">
+        <div class="alert-badge">Producto: LactoScan</div>
+        <h1>Safe Bite<br>la forma más sencilla de detectar lactosa</h1>
+        <p class="subtitle">Un producto de LactoScan pensado para ayudarte a comer con más seguridad, confianza y tranquilidad.</p>
+        <a href="#how-it-works" class="cta-btn" style="padding: 16px 36px; font-size: 1.1rem; margin-top: 20px;">Descubre cómo funciona</a>
+    </section>
+
+    <!-- Sección Didáctica -->
+    <section id="how-it-works" class="how-it-works">
+        <h2>El puente entre el laboratorio y tu vida diaria</h2>
+        <p style="color: var(--texto-secundario); font-size: 1.2rem;">Tecnología enzimática portátil. Resultados en menos de 3 minutos.</p>
+        
+        <div class="steps-container">
+            <!-- Tarjeta 1 -->
+            <div class="step-card">
+                <div class="step-icon">📱</div>
+                <h3>1. Foto con IA</h3>
+                <p>Nuestra aplicación inteligente identifica visualmente las zonas de riesgo en tu plato (salsas, quesos, cremas) y te indica exactamente dónde tomar la muestra.</p>
+            </div>
+            <!-- Tarjeta 2 -->
+            <div class="step-card">
+                <div class="step-icon">🧪</div>
+                <h3>2. Micromuestra</h3>
+                <p>Toma una pequeña porción del alimento sospechoso, deposítala en nuestro cartucho reactivo desechable e insértalo en el lector portátil de bolsillo.</p>
+            </div>
+            <!-- Tarjeta 3 -->
+            <div class="step-card">
+                <div class="step-icon">✅</div>
+                <h3>3. Confianza Total</h3>
+                <p>El lector analiza la enzima y te entrega un resultado inconfundible (verde, amarillo o rojo). Sabrás si es seguro comer antes de arriesgarte.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modelo de Negocios para Sharks -->
+    <section class="business-section">
+        <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Modelo de Negocio Escalable</h2>
+        <p style="color: #A1A1A6; font-size: 1.2rem;">Basado en el estándar de la industria MedTech: dispositivo accesible + consumible recurrente.</p>
+        
+        <div class="pricing-container">
+            <div class="price-box">
+                <span>Hardware Inicial (Pago único)</span>
+                <h1>$69.90</h1>
+                <p>Lector portátil LactoScan de alta precisión.</p>
+            </div>
+            <div class="price-box" style="border-color: var(--azul-clinico); background: rgba(10, 88, 202, 0.1);">
+                <span style="color: var(--blanco-puro); font-weight: bold;">Suscripción (Recurrente)</span>
+                <h1 style="color: #00C6FF;">$14.90</h1>
+                <p>Pack mensual de 20 cartuchos inteligentes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Equipo Fundador (ORDEN: LUCIANO, EMILIANO, NACHO) -->
+    <section id="equipo" class="equipo-section">
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Ingeniería de precisión. Visión global.</h2>
+        <p style="color: var(--texto-secundario); font-size: 1.2rem;">Conoce al equipo fundador detrás de LactoScan.</p>
+        
+        <div class="equipo-grid">
+            
+            <!-- 1. Luciano Constanzo (LUCIANO) -->
+            <div class="team-card">
+                <img src="LUCIANO.jpg" alt="Luciano Constanzo" class="team-photo">
+                <h3>Luciano Constanzo</h3>
+                <p class="role">CEO & Hardware</p>
+                <ul class="funciones">
+                    <li>Visión estratégica y ejecución corporativa.</li>
+                    <li>Diseño e ingeniería del dispositivo lector portátil.</li>
+                </ul>
+            </div>
+            
+            <!-- 2. Emiliano Hernandez (EMILIANO) -->
+            <div class="team-card">
+                <img src="EMILIANO.jpeg" alt="Emiliano Hernandez" class="team-photo">
+                <h3>Emiliano Hernandez</h3>
+                <p class="role">CTO & IA</p>
+                <ul class="funciones">
+                    <li>Liderazgo tecnológico y desarrollo de software.</li>
+                    <li>Creación del algoritmo de interpretación guiado por IA.</li>
+                </ul>
+            </div>
+
+            <!-- 3. Ignacio Sandoval (NACHO) -->
+            <div class="team-card">
+                <img src="NACHO.jpg" alt="Ignacio Sandoval" class="team-photo">
+                <h3>Ignacio Sandoval</h3>
+                <p class="role">CMO & Regulatory Strategy</p>
+                <ul class="funciones">
+                    <li>Dirección de marketing y validación clínica.</li>
+                    <li>Gestión de asuntos regulatorios (FDA/ISP).</li>
+                </ul>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Sección Roadmap - Modelo Escalable -->
+    <section style="padding: 100px 20px; background: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);">
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; color: #1D1D1F;">SafeBite: Un modelo escalable</h2>
+        <p style="color: #86868B; font-size: 1.2rem; margin-bottom: 60px;">Comenzamos con lactosa. Expandimos hacia múltiples alérgenos.</p>
+        
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Header con impactos -->
+            <div style="background: #1D1D1F; color: white; padding: 30px; border-radius: 20px; margin-bottom: 60px; text-align: center;">
+                <p style="font-size: 1.1rem; margin: 10px 0;"><strong>Impacto Clínico:</strong> 90% reducción de eventos adversos Gastrointestinal (GI).</p>
+                <p style="font-size: 1.1rem; margin: 10px 0;"><strong>Impacto Social:</strong> Devolver la confianza al comer fuera.</p>
+            </div>
+
+            <!-- Grid de 4 Fases -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto;">
+                
+                <!-- Fase 1: Lactosa -->
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">🧬</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: #0A58CA;">Fase 1: Lactosa</h3>
+                    <p style="color: #86868B; line-height: 1.6; font-size: 1rem;">Desarrollo de detección para intolerantes a la lactosa. El punto de partida de SafeBite.</p>
+                </div>
+
+                <!-- Fase 2: Gluten -->
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">🌾</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: #0A58CA;">Fase 2: Gluten</h3>
+                    <p style="color: #86868B; line-height: 1.6; font-size: 1rem;">Expansión para detección de gluten (celiaquía). Alcance a población celíaca.</p>
+                </div>
+
+                <!-- Fase 3: Maní -->
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">🥜</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: #0A58CA;">Fase 3: Maní</h3>
+                    <p style="color: #86868B; line-height: 1.6; font-size: 1rem;">Incorporación de alérgenos comunes como el maní y otros frutos secos.</p>
+                </div>
+
+                <!-- Fase 4: Plataforma Global -->
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">🌍</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: #0A58CA;">Fase 4: Plataforma Global SafeBite</h3>
+                    <p style="color: #86868B; line-height: 1.6; font-size: 1rem;">Creación de una plataforma integral para múltiples alérgenos y seguridad alimentaria.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulario de Conversión Limpio -->
+    <section id="piloto" class="pilot-section">
+        <h2 style="font-size: 2.5rem; font-weight: 800;">¿Listo para invertir en confianza?</h2>
+        <p style="color: var(--texto-secundario); margin-top: 10px;">Comer no debería ser una apuesta. Únete a la revolución alimentaria.</p>
+        
+        <div class="pilot-form">
+            <form id="contactForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" placeholder="Ej. Mark Cuban" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="contacto@sharktank.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="interest">Selecciona tu perfil</label>
+                    <select id="interest" required>
+                        <option value="" disabled selected>Elige una opción...</option>
+                        <option value="inversor">Soy un Inversor (Shark)</option>
+                        <option value="usuario">Quiero ser Usuario Piloto</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="cta-btn" style="width: 100%; font-size: 1.1rem; padding: 15px; margin-top: 10px;">Solicitar Acceso Exclusivo</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px;">LactoScan</h2>
+        <p style="color: #86868B;">Food confidence in your pocket.</p>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #555;">© 2026 LactoScan. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Script para Interacción del Formulario -->
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button');
+            const originalText = btn.innerText;
+            
+            // Efecto visual de carga
+            btn.innerText = "Procesando...";
+            btn.style.opacity = "0.8";
+            
+            setTimeout(() => {
+                alert('¡Excelente! Tu perfil ha sido registrado en nuestra base de datos. Nos comunicaremos contigo a la brevedad.');
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                event.target.reset();
+            }, 800);
+        }
+    </script>
+</body>
+</html>
